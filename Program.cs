@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿//Written for Tales Runner. https://store.steampowered.com/app/328060
+using System.IO;
 using System.IO.Compression;
 
 namespace Tales_Runner_Extractor
