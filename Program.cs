@@ -49,6 +49,7 @@ namespace Tales_Runner_Extractor
                         break;
                 }
                 FileStream fs = File.Create(path + n + extention);
+                ms.Position = 0;
                 ms.CopyTo(fs);
                 fs.Close();
                 sr.Close();
