@@ -22,20 +22,37 @@ namespace Tales_Runner_Extractor
                 br.ReadSingle();
                 int isCompressed = br.ReadInt32();
 
-
+                MemoryStream ms = new();
                 if (isCompressed == 1)
                 {
-                    MemoryStream ms = new();
                     br.ReadInt16();
-                    using (var ds = new DeflateStream(new MemoryStream(br.ReadBytes(sizeCompressed - 2)), CompressionMode.Decompress))
-                        ds.CopyTo(File.Create(path + n));
-                    n++;
-                    continue;
+                    using var ds = new DeflateStream(new MemoryStream(br.ReadBytes(sizeCompressed - 2)), CompressionMode.Decompress);
+                    ds.CopyTo(ms);
+                }
+                else
+                {
+                    BinaryWriter bw = new(ms);
+                    bw.Write(br.ReadBytes(sizeUncompressed));
                 }
 
-                BinaryWriter bw = new(File.Create(path + n));
-                bw.Write(br.ReadBytes(sizeUncompressed));
-                bw.Close();
+                StreamReader sr = new(ms);
+                sr.BaseStream.Position = 0;
+                char[] magicChars = new char[4];
+                sr.ReadBlock(magicChars, 0, 4);
+                string magic = new(magicChars);
+
+                string extention = "";
+                switch(magic)
+                {
+                    case "DDS ":
+                        extention = ".dds";
+                        break;
+                }
+                FileStream fs = File.Create(path + n + extention);
+                ms.CopyTo(fs);
+                fs.Close();
+                sr.Close();
+                ms.Close();
                 n++;
             }
         }
