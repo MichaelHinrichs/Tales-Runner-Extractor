@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Tales-Runner-Extractor": {
+      "commandName": "Project",
+      "commandLineArgs": "\"E:\\SteamLibrary\\steamapps\\common\\Tales Runner\\map_etc.pkg\""
+    }
+  }
+}
