@@ -61,22 +61,29 @@ namespace Tales_Runner_Extractor
                         magic = new string(magicChars).TrimEnd('\0');
                         if (magic == "CharModel")
                         {
-                            sr.ReadBlock(magicChars, 9, 5);
+                            sr.ReadBlock(magicChars, 9, 4);
                             magic = new string(magicChars).TrimEnd('\0');
-                            switch (magic)
+                            if (magic == "CharModelAni1")
+                                extention = ".cma1";
+                            else
                             {
-                                case "CharModelPart2":
-                                    extention = ".cmp2";
-                                    break;
-                                case "CharModelMesh2":
-                                    extention = ".cmm2";
-                                    break;
-                                case "CharModelPart3":
-                                    extention = ".cmp3";
-                                    break;
-                                case "CharModelMesh3":
-                                    extention = ".cmm3";
-                                    break;
+                                sr.ReadBlock(magicChars, 13, 1);
+                                magic = new string(magicChars).TrimEnd('\0');
+                                switch (magic)
+                                {
+                                    case "CharModelPart2":
+                                        extention = ".cmp2";
+                                        break;
+                                    case "CharModelMesh2":
+                                        extention = ".cmm2";
+                                        break;
+                                    case "CharModelPart3":
+                                        extention = ".cmp3";
+                                        break;
+                                    case "CharModelMesh3":
+                                        extention = ".cmm3";
+                                        break;
+                                }
                             }
                         }
                         else if (magic == "CharAnima")
